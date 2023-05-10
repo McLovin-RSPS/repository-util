@@ -26,16 +26,24 @@ def get_fork_info(api_token, repo):
     # Select the fork with the longest description
     longest_description_fork = sorted(fork_info, key=lambda x: len(x['description']), reverse=True)[0]
 
-    # Format the output as a dictionary
-    output_dict = {'largest_forks': largest_forks, 'smallest_forks': smallest_forks, 'most_recent_fork': most_recent_fork, 'most_popular_fork': most_popular_fork, 'longest_description_fork': longest_description_fork}
-
-    return output_dict
+    return {
+        'largest_forks': largest_forks,
+        'smallest_forks': smallest_forks,
+        'most_recent_fork': most_recent_fork,
+        'most_popular_fork': most_popular_fork,
+        'longest_description_fork': longest_description_fork,
+    }
 
 def format_output(output_dict):
-    # Format the output as a string
-    output_str = f"Largest forks:\n\n{pd.DataFrame(output_dict['largest_forks'])[['name', 'owner', 'size']]}".replace('\n', '\n\n') + f"\n\nSmallest forks:\n\n{pd.DataFrame(output_dict['smallest_forks'])[['name', 'owner', 'size']]}".replace('\n', '\n\n') + f"\n\nMost up-to-date fork: {output_dict['most_recent_fork']['name']} ({output_dict['most_recent_fork']['owner']})\n\nMost popular fork: {output_dict['most_popular_fork']['name']} ({output_dict['most_popular_fork']['owner']})\n\nLongest description fork: {output_dict['longest_description_fork']['name']} ({output_dict['longest_description_fork']['owner']})"
-
-    return output_str
+    return (
+        f"Largest forks:\n\n{pd.DataFrame(output_dict['largest_forks'])[['name', 'owner', 'size']]}".replace(
+            '\n', '\n\n'
+        )
+        + f"\n\nSmallest forks:\n\n{pd.DataFrame(output_dict['smallest_forks'])[['name', 'owner', 'size']]}".replace(
+            '\n', '\n\n'
+        )
+        + f"\n\nMost up-to-date fork: {output_dict['most_recent_fork']['name']} ({output_dict['most_recent_fork']['owner']})\n\nMost popular fork: {output_dict['most_popular_fork']['name']} ({output_dict['most_popular_fork']['owner']})\n\nLongest description fork: {output_dict['longest_description_fork']['name']} ({output_dict['longest_description_fork']['owner']})"
+    )
 
 api_key = "<your OpenAI API token here>"
 repo = "rspsi/rspsi"
